@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Requests\Product\UpdateRequest;
+use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 
 class UpdateController extends BaseController
@@ -11,7 +12,9 @@ class UpdateController extends BaseController
     {
         $data = $request->validated();
 
-        $this->service->update($product, $data);
+        $product = $this->service->update($product, $data);
+
+        return new ProductResource($product);
 
         return redirect()->route('products.index');
     }

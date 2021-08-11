@@ -8,7 +8,7 @@ class DestroyController extends BaseController
 {
     public function __invoke(Product $product)
     {
-        $product->delete();
+        $this->service->destroy($product);
 
         return redirect()->route('products.index');
     }

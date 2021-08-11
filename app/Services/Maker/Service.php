@@ -5,6 +5,7 @@ namespace App\Services\Maker;
 
 use App\Models\Maker;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Service
 {
@@ -21,10 +22,13 @@ class Service
     {
         try {
             Db::beginTransaction();
-            Maker::create($data);
+            $maker = Maker::create($data);
+            $this->loggingSuccess($maker, 'creating');
             Db::commit();
+
         } catch (\Exception $exception) {
             Db::rollBack();
+            $this->loggingFailed($exception, 'create');
             return $exception->getMessage();
         }
     }
@@ -34,9 +38,11 @@ class Service
         try {
             Db::beginTransaction();
             $maker->update($data);
+            $this->loggingSuccess($maker, 'updating');
             Db::commit();
         } catch (\Exception $exception) {
             Db::rollBack();
+            $this->loggingFailed($exception, 'update');
             return $exception->getMessage();
         }
         return $maker->fresh();
@@ -47,10 +53,26 @@ class Service
         try {
             Db::beginTransaction();
             $maker->delete();
+            $this->loggingSuccess($maker, 'deletion');
             Db::commit();
         } catch (\Exception $exception) {
             Db::rollBack();
+            $this->loggingFailed($exception, 'delete');
             return $exception->getMessage();
         }
+    }
+
+    // Logs
+    public function loggingSuccess($maker, $action) {
+        Log::channel('debuginfo')->info("Successful $action - maker", [
+            'id' => $maker->id,
+            'name' => $maker->name,
+        ]);
+    }
+
+    public function loggingFailed($exception, $action) {
+        Log::channel('debuginfo')->error("Failed to $action - maker", [
+            'error' => $exception->getMessage(),
+        ]);
     }
 }

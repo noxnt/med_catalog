@@ -28,6 +28,8 @@ class FilterRequest extends FormRequest
             'name' => 'string',
             'substance_id' => 'integer',
             'maker_id' => 'integer',
+            'page' => '',
+            'per_page' => '',
         ];
     }
 }

@@ -24,7 +24,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->sentence(2),
+            'name' => $this->faker->sentence(3),
             'substance_id' => Substance::get()->random()->id,
             'maker_id' => Maker::get()->random()->id,
             'price' => rand(50,1000),

@@ -13,6 +13,6 @@ class UpdateController extends BaseController
 
         $this->service->update($maker, $data);
 
-        return redirect()->route('maker.index');
+        return redirect()->route('makers.index');
     }
 }
