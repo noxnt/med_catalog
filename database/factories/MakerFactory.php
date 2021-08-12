@@ -22,7 +22,7 @@ class MakerFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company,
+            'name' => $this->faker->company . rand(0, 500),
             'link' => $this->faker->url(),
         ];
     }
