@@ -1,7 +1,10 @@
 @extends('layouts.main')
 @section('content')
     <div class="row mt-3">
-        <h2>List of medicines ({{ $products->total() }}):</h2>
+        <h2 class="w-50">List of medicines ({{ $products->total() }}):</h2>
+        <form class="input-group w-50" action="{{ route('products.index') }}" method="GET">
+            <input type="search" class="form-control rounded" placeholder="Search by name" name="name">
+        </form>
     </div>
 
     <div class="row">
