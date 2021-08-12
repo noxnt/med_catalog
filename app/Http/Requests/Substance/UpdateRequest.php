@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string|unique:substances,name,{$this->substance->id}",
+            'name' => "string|unique:substances,name,{$this->substance->id}",
         ];
     }
 }

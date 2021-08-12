@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Requests\Product\StoreRequest;
+use App\Http\Resources\Product\ProductResource;
 
 class StoreController extends BaseController
 {
@@ -10,7 +11,10 @@ class StoreController extends BaseController
     {
         $data = $request->validated();
 
-        $this->service->store($data);
+        $product = $this->service->store($data);
+
+        if (request()->wantsJson())
+            return new ProductResource($product);
 
         return redirect()->route('products.index');
     }

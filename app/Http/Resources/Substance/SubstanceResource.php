@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Product;
+namespace App\Http\Resources\Substance;
 
-use App\Models\Maker;
-use App\Models\Substance;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class SubstanceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,9 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'substance' => Substance::find($this->substance_id),
-            'maker' => Maker::find($this->maker_id),
-            'price' => $this->price,
+            'products' => $this->products()->count(),
         ];
     }
 }

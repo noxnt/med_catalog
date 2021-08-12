@@ -26,11 +26,13 @@ class Service
             $product = Product::create($data);
             $this->loggingSuccess($product, 'creating');
             Db::commit();
+
         } catch (\Exception $exception) {
             Db::rollBack();
             $this->loggingFailed($exception, 'create');
             return $exception->getMessage();
         }
+        return $product;
     }
 
     public function update($product, $data)
@@ -52,6 +54,7 @@ class Service
     {
         try {
             Db::beginTransaction();
+            $deleted = $product;
             $product->delete();
             $this->loggingSuccess($product, 'deletion');
             Db::commit();
@@ -60,10 +63,11 @@ class Service
             $this->loggingFailed($exception, 'delete');
             return $exception->getMessage();
         }
+        return $deleted;
     }
 
     // Logs
-    public function loggingSuccess($product, $action) {
+    private function loggingSuccess($product, $action) {
         Log::channel('debuginfo')->info("Successful $action - product", [
             'id' => $product->id,
             'name' => $product->name,
@@ -71,7 +75,7 @@ class Service
         ]);
     }
 
-    public function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action) {
         Log::channel('debuginfo')->error("Failed to $action - product", [
             'error' => $exception->getMessage(),
         ]);

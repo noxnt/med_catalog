@@ -25,11 +25,13 @@ class Service
             $substance = Substance::create($data);
             $this->loggingSuccess($substance, 'creating');
             Db::commit();
+
         } catch (\Exception $exception) {
             Db::rollBack();
             $this->loggingFailed($exception, 'create');
             return $exception->getMessage();
         }
+        return $substance;
     }
 
     public function update($substance, $data)
@@ -51,7 +53,8 @@ class Service
     {
         try {
             Db::beginTransaction();
-            $substance->delete();
+            $deleted = $substance;
+            $substance = $substance->delete();
             $this->loggingSuccess($substance, 'deletion');
             Db::commit();
         } catch (\Exception $exception) {
@@ -59,17 +62,18 @@ class Service
             $this->loggingFailed($exception, 'delete');
             return $exception->getMessage();
         }
+        return $deleted;
     }
 
     // Logs
-    public function loggingSuccess($substance, $action) {
+    private function loggingSuccess($substance, $action) {
         Log::channel('debuginfo')->info("Successful $action - substance", [
             'id' => $substance->id,
             'name' => $substance->name,
         ]);
     }
 
-    public function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action) {
         Log::channel('debuginfo')->error("Failed to $action - substance", [
             'error' => $exception->getMessage(),
         ]);

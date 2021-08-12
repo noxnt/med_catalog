@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Maker::factory(5)->create();
-        Substance::factory(50)->create();
-        Product::factory(100)->create();
+        Substance::factory(30)->create();
+        Product::factory(70)->create();
     }
 }

@@ -24,10 +24,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|string|unique:products,name,{$this->product->id}",
-            'substance_id' => 'required|integer',
-            'maker_id' => 'required|integer',
-            'price' => 'required|integer',
+            'name' => "string|unique:products,name,{$this->product->id}",
+            'substance_id' => 'integer',
+            'maker_id' => 'integer',
+            'price' => 'integer',
         ];
     }
 }

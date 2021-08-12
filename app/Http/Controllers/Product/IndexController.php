@@ -15,18 +15,25 @@ class IndexController extends BaseController
     {
         $data = $request->validated();
 
-        $page = $data['page'] ?? 1;
-        $perPage = $data['per_page'] ?? 20;
-
-        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
-
-        $products = Product::filter($filter)->paginate($perPage, ['*'], 'page', $page);
+        $products = $this->getFilter($data);
 
         $products = $this->service->index($products);
+
+        if (request()->wantsJson())
+            return ProductResource::collection($products);
 
         $makers = Maker::all();
         $substances = Substance::all();
 
         return view('product.index', compact(['products', 'makers', 'substances']));
+    }
+
+    private function getFilter($data)
+    {
+        $page = $data['page'] ?? 1;
+        $perPage = $data['per_page'] ?? 20;
+
+        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
+        return Product::filter($filter)->paginate($perPage, ['*'], 'page', $page);
     }
 }

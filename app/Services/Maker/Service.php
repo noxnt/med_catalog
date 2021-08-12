@@ -31,6 +31,7 @@ class Service
             $this->loggingFailed($exception, 'create');
             return $exception->getMessage();
         }
+        return $maker;
     }
 
     public function update($maker, $data)
@@ -52,6 +53,7 @@ class Service
     {
         try {
             Db::beginTransaction();
+            $deleted = $maker;
             $maker->delete();
             $this->loggingSuccess($maker, 'deletion');
             Db::commit();
@@ -60,17 +62,18 @@ class Service
             $this->loggingFailed($exception, 'delete');
             return $exception->getMessage();
         }
+        return $deleted;
     }
 
     // Logs
-    public function loggingSuccess($maker, $action) {
+    private function loggingSuccess($maker, $action) {
         Log::channel('debuginfo')->info("Successful $action - maker", [
             'id' => $maker->id,
             'name' => $maker->name,
         ]);
     }
 
-    public function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action) {
         Log::channel('debuginfo')->error("Failed to $action - maker", [
             'error' => $exception->getMessage(),
         ]);

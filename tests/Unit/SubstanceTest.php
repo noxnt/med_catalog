@@ -5,13 +5,13 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
-class ProductTest extends TestCase
+class SubstanceTest extends TestCase
 {
     use DatabaseTransactions;
 
     public function testStatus()
     {
-        $response = $this->get('/products');
+        $response = $this->get('/substances');
         $response->assertStatus(200);
     }
 
@@ -27,7 +27,7 @@ class ProductTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
-        ])->json('GET', '/products');
+        ])->json('GET', '/substances');
 
         $response->assertStatus(200);
     }
@@ -36,11 +36,8 @@ class ProductTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
-        ])->json('POST', '/products', [
-            'name' => 'Create product JSON',
-            'substance_id' => 5,
-            'maker_id' => 5,
-            'price' => 100,
+        ])->json('POST', '/substances', [
+            'name' => 'Create substance JSON',
         ]);
 
         $response
@@ -49,9 +46,7 @@ class ProductTest extends TestCase
                 'data' => [
                     'id',
                     'name',
-                    'substance',
-                    'maker',
-                    'price',
+                    'products',
                 ],
             ]);
     }
@@ -60,9 +55,8 @@ class ProductTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
-        ])->json('PATCH', '/products/1', [
-            'name' => 'Update product JSON',
-            'price' => 250,
+        ])->json('PATCH', '/substances/1', [
+            'name' => 'Update substance JSON',
         ]);
 
         $response
@@ -71,28 +65,7 @@ class ProductTest extends TestCase
                 'data' => [
                     'id',
                     'name',
-                    'substance',
-                    'maker',
-                    'price',
-                ],
-            ]);
-    }
-
-    public function test_destroy_api_json()
-    {
-        $response = $this->withHeaders([
-            'Accept' => '/json',
-        ])->json('DELETE', '/products/1', []);
-
-        $response
-            ->assertStatus(200)
-            ->assertJsonStructure([
-                'data' => [
-                    'id',
-                    'name',
-                    'substance',
-                    'maker',
-                    'price',
+                    'products',
                 ],
             ]);
     }
@@ -101,8 +74,8 @@ class ProductTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
-        ])->json('GET', '/products', [
-            'maker_id' => 1
+        ])->json('GET', '/substances', [
+            'name' => '*',
         ]);
 
         $response->assertStatus(200);
@@ -112,8 +85,8 @@ class ProductTest extends TestCase
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
-        ])->json('GET', '/products', [
-            'maker_id' => 'string'
+        ])->json('GET', '/substances', [
+            'name' => 1,
         ]);
 
         $response->assertStatus(422);
@@ -123,17 +96,14 @@ class ProductTest extends TestCase
     // WEB API
     public function test_index_api_web()
     {
-        $response = $this->get('/products');
+        $response = $this->get('/substances');
         $response->assertStatus(200);
     }
 
     public function test_create_api_web()
     {
-        $response = $this->post('/products', [
-            'name' => 'Create product WEB',
-            'substance_id' => 1,
-            'maker_id' => 1,
-            'price' => 50,
+        $response = $this->post('/substances', [
+            'name' => 'Create substance WEB',
         ]);
 
         $response->assertStatus(302);
@@ -141,8 +111,8 @@ class ProductTest extends TestCase
 
     public function test_update_api_web()
     {
-        $response = $this->patch('/products/5', [
-            'name' => 'Update product WEB',
+        $response = $this->patch('/substances/5', [
+            'name' => 'Update substance WEB',
         ]);
 
         $response->assertStatus(302);
@@ -150,14 +120,14 @@ class ProductTest extends TestCase
 
     public function test_destroy_api_web()
     {
-        $response = $this->delete('/products/5');
+        $response = $this->delete('/substances/5');
         $response->assertStatus(302);
     }
 
     public function test_filter_index_api_web()
     {
-        $response = $this->json( 'GET', '/products', [
-            'maker_id' => 1,
+        $response = $this->json( 'GET', '/substances', [
+            'name' => '*',
         ]);
 
         $response->assertStatus(200);
@@ -165,8 +135,8 @@ class ProductTest extends TestCase
 
     public function test_failed_filter_index_api_web()
     {
-        $response = $this->json('GET', '/products', [
-            'maker_id' => 'string',
+        $response = $this->json('GET', '/substances', [
+            'name' => true,
         ]);
 
         $response->assertStatus(422);

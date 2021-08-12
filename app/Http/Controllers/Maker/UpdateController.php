@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Maker;
 
 use App\Http\Requests\Maker\UpdateRequest;
+use App\Http\Resources\Maker\MakerResource;
 use App\Models\Maker;
 
 class UpdateController extends BaseController
@@ -11,7 +12,10 @@ class UpdateController extends BaseController
     {
         $data = $request->validated();
 
-        $this->service->update($maker, $data);
+        $maker = $this->service->update($maker, $data);
+
+        if (request()->wantsJson())
+            return new MakerResource($maker);
 
         return redirect()->route('makers.index');
     }
