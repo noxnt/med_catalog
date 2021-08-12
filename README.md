@@ -95,4 +95,4 @@ DELETE	|'/products/{id}'   |   удаление записи
 * Локальный сервер (WAMP, OpenServer, XAMPP), либо используйте SQLite (PHPStorm)
 
 ## Linter
-Код соответствует стандартам PSR-12, использовалась библиотека [https://github.com/laravel-fans/laravel-lint]().
+Код соответствует стандартам PSR-12, использовалась библиотека [ https://github.com/laravel-fans/laravel-lint ]().
