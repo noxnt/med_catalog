@@ -17,8 +17,9 @@ class IndexController extends BaseController
 
         $makers = $this->service->index($makers);
 
-        if (request()->wantsJson())
+        if (request()->wantsJson()) {
             return MakerResource::collection($makers);
+        }
 
         return view('maker.index', compact('makers'));
     }
@@ -27,6 +28,8 @@ class IndexController extends BaseController
     {
         $page = $data['page'] ?? 1;
         $perPage = $data['per_page'] ?? 20;
+        session()->put('per_page', $perPage);
+        $perPage = $data['per_page'] ?? session('per_page');
 
         $filter = app()->make(MakerFilter::class, ['queryParams' => array_filter($data)]);
         return Maker::filter($filter)->paginate($perPage, ['*'], 'page', $page);

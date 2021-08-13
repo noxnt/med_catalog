@@ -24,11 +24,16 @@
                             @csrf
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input class="form-control" id="name" placeholder="Enter name" name="name">
+                                    <input class="form-control @error('name') is-invalid @enderror" id="name"
+                                           placeholder="Enter name" name="name">
+                                    @error('name')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label for="substances">Active substance</label>
-                                    <select class="form-control" id="substances" name="substance_id">
+                                    <select class="form-control @error('substance_id') is-invalid @enderror"
+                                            id="substances" name="substance_id">
                                         @foreach($substances as $substance)
                                             <option value="{{ $substance->id }}">{{ $substance->name }}</option>
                                         @endforeach
@@ -36,7 +41,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="makers">Maker</label>
-                                    <select class="form-control" id="makers" name="maker_id">
+                                    <select class="form-control @error('maker_id') is-invalid @enderror"
+                                            id="makers" name="maker_id">
                                         @foreach($makers as $maker)
                                             <option value="{{ $maker->id }}">{{ $maker->name }}</option>
                                         @endforeach
@@ -44,7 +50,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="price">Price</label>
-                                    <input class="form-control" name="price" type="number" min="0" id="price" placeholder="Price">
+                                    <input class="form-control @error('price') is-invalid @enderror" name="price"
+                                           type="number" min="0" id="price" placeholder="Price">
+                                    @error('price')
+                                        <p class="text-danger">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -88,8 +98,22 @@
             </tbody>
         </table>
 
-        <div class="mt-1">
-            {{ $products->withQueryString()->links() }}
+        @if($products->total() > 10)
+        <div class="row w-100 mt-1">
+            <div class="col-md-9">
+                {{ $products->withQueryString()->links() }}
+            </div>
+            <div class="col-md-1 p-0 pt-2">
+                <p class="text-right">Show:</p>
+            </div>
+            <form class="col-md-2 page-form">
+                <select class="form-control page-select" name="per_page">
+                    @foreach([10,20,50] as $item)
+                        <option value="{{ $item }}" {{ session('per_page') == $item ? ' selected' : '' }}>{{ $item }} rows</option>
+                    @endforeach
+                </select>
+            </form>
         </div>
+        @endif
     </div>
 @endsection

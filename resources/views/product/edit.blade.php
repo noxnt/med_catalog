@@ -12,12 +12,15 @@
                 @method('patch')
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input class="form-control" id="name" placeholder="Enter name"
+                        <input class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter name"
                             name="name" value="{{ $product->name }}">
+                        @error('name')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="substances">Active substance</label>
-                        <select class="form-control" id="substances" name="substance_id">
+                        <select class="form-control @error('substance_id') is-invalid @enderror" id="substances" name="substance_id">
                             @foreach($substances as $substance)
                                 <option value="{{ $substance->id }}"
                                 {{ $product->substance_id == $substance->id ? ' selected' : '' }}
@@ -27,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         <label for="makers">Maker</label>
-                        <select class="form-control" id="makers" name="maker_id">
+                        <select class="form-control @error('maker_id') is-invalid @enderror" id="makers" name="maker_id">
                             @foreach($makers as $maker)
                                 <option value="{{ $maker->id }}"
                                 {{ $product->maker_id == $maker->id ? ' selected' : '' }}
@@ -37,8 +40,11 @@
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
-                        <input class="form-control" name="price" type="number" min="0" id="price"
-                            placeholder="Price" value="{{ $product->price }}">
+                        <input class="form-control @error('price') is-invalid @enderror" name="price"
+                               type="number" min="0" id="price" placeholder="Price" value="{{ $product->price }}">
+                        @error('price')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary w-25">Submit</button>

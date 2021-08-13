@@ -12,8 +12,11 @@
                     @method('patch')
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input class="form-control" id="name" placeholder="Enter name" name="name"
+                        <input class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter name" name="name"
                             value="{{ $substance->name }}">
+                        @error('name')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary w-25">Submit</button>
                 </form>

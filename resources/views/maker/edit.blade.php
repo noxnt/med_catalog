@@ -12,13 +12,20 @@
                     @method('patch')
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input class="form-control" id="name" placeholder="Enter name" name="name"
-                            value="{{ $maker->name }}">
+                        <input class="form-control @error('name') is-invalid @enderror" id="name"
+                               placeholder="Enter name" name="name" value="{{ $maker->name }}">
+                        @error('name')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="name">Link</label>
-                        <input class="form-control" type="url" id="name" placeholder="Enter link" name="link"
+                        <input class="form-control @error('name') is-invalid @enderror" type="url"
+                               id="name" placeholder="Enter link" name="link"
                             value="{{ $maker->link }}">
+                        @error('link')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary w-25">Submit</button>
                 </form>

@@ -17,8 +17,9 @@ class IndexController extends BaseController
 
         $substances = $this->service->index($substances);
 
-        if (request()->wantsJson())
+        if (request()->wantsJson()) {
             return SubstanceResource::collection($substances);
+        }
 
         return view('substance.index', compact('substances'));
     }
@@ -27,6 +28,8 @@ class IndexController extends BaseController
     {
         $page = $data['page'] ?? 1;
         $perPage = $data['per_page'] ?? 20;
+        session()->put('per_page', $perPage);
+        $perPage = $data['per_page'] ?? session('per_page');
 
         $filter = app()->make(SubstanceFilter::class, ['queryParams' => array_filter($data)]);
         return Substance::filter($filter)->paginate($perPage, ['*'], 'page', $page);

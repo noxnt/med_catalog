@@ -9,9 +9,16 @@ class SubstanceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testStatus()
+    // Status
+    public function testStatusIndex()
     {
         $response = $this->get('/substances');
+        $response->assertStatus(200);
+    }
+
+    public function testStatusEdit()
+    {
+        $response = $this->get('/substances/1/edit');
         $response->assertStatus(200);
     }
 
@@ -23,7 +30,7 @@ class SubstanceTest extends TestCase
     }
 
     // JSON API
-    public function test_index_api_json()
+    public function testIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -32,7 +39,7 @@ class SubstanceTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_create_api_json()
+    public function testCreateApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -51,7 +58,7 @@ class SubstanceTest extends TestCase
             ]);
     }
 
-    public function test_update_api_json()
+    public function testUpdateApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -70,7 +77,7 @@ class SubstanceTest extends TestCase
             ]);
     }
 
-    public function test_filter_index_api_json()
+    public function testFilterIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -81,7 +88,7 @@ class SubstanceTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_failed_filter_index_api_json()
+    public function testFailedFilterIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -94,13 +101,13 @@ class SubstanceTest extends TestCase
 
 
     // WEB API
-    public function test_index_api_web()
+    public function testIndexApiWeb()
     {
         $response = $this->get('/substances');
         $response->assertStatus(200);
     }
 
-    public function test_create_api_web()
+    public function testCreateApiWeb()
     {
         $response = $this->post('/substances', [
             'name' => 'Create substance WEB',
@@ -109,7 +116,7 @@ class SubstanceTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_update_api_web()
+    public function testUpdateApiWeb()
     {
         $response = $this->patch('/substances/5', [
             'name' => 'Update substance WEB',
@@ -118,22 +125,22 @@ class SubstanceTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_destroy_api_web()
+    public function testDestroyApiWeb()
     {
         $response = $this->delete('/substances/5');
         $response->assertStatus(302);
     }
 
-    public function test_filter_index_api_web()
+    public function testFilterIndexApiWeb()
     {
-        $response = $this->json( 'GET', '/substances', [
+        $response = $this->json('GET', '/substances', [
             'name' => '*',
         ]);
 
         $response->assertStatus(200);
     }
 
-    public function test_failed_filter_index_api_web()
+    public function testFailedFilterIndexApiWeb()
     {
         $response = $this->json('GET', '/substances', [
             'name' => true,

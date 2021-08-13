@@ -9,9 +9,16 @@ class ProductTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testStatus()
+    // Status
+    public function testStatusIndex()
     {
         $response = $this->get('/products');
+        $response->assertStatus(200);
+    }
+
+    public function testStatusEdit()
+    {
+        $response = $this->get('/products/1/edit');
         $response->assertStatus(200);
     }
 
@@ -23,7 +30,7 @@ class ProductTest extends TestCase
     }
 
     // JSON API
-    public function test_index_api_json()
+    public function testIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -32,7 +39,7 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_create_api_json()
+    public function testCreateApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -56,7 +63,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function test_update_api_json()
+    public function testUpdateApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -78,7 +85,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function test_destroy_api_json()
+    public function testDestroyApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -97,7 +104,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function test_filter_index_api_json()
+    public function testFilterIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -108,7 +115,7 @@ class ProductTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_failed_filter_index_api_json()
+    public function testFailedFilterIndexApiJson()
     {
         $response = $this->withHeaders([
             'Accept' => '/json',
@@ -121,13 +128,13 @@ class ProductTest extends TestCase
 
 
     // WEB API
-    public function test_index_api_web()
+    public function testIndexApiWeb()
     {
         $response = $this->get('/products');
         $response->assertStatus(200);
     }
 
-    public function test_create_api_web()
+    public function testCreateApiWeb()
     {
         $response = $this->post('/products', [
             'name' => 'Create product WEB',
@@ -139,7 +146,7 @@ class ProductTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_update_api_web()
+    public function testUpdateApiWeb()
     {
         $response = $this->patch('/products/5', [
             'name' => 'Update product WEB',
@@ -148,22 +155,22 @@ class ProductTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_destroy_api_web()
+    public function testDestroyApiWeb()
     {
         $response = $this->delete('/products/5');
         $response->assertStatus(302);
     }
 
-    public function test_filter_index_api_web()
+    public function testFilterIndexApiWeb()
     {
-        $response = $this->json( 'GET', '/products', [
+        $response = $this->json('GET', '/products', [
             'maker_id' => 1,
         ]);
 
         $response->assertStatus(200);
     }
 
-    public function test_failed_filter_index_api_web()
+    public function testFailedFilterIndexApiWeb()
     {
         $response = $this->json('GET', '/products', [
             'maker_id' => 'string',
