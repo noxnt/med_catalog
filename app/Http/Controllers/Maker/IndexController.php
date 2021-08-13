@@ -18,7 +18,7 @@ class IndexController extends BaseController
         $makers = $this->service->index($makers);
 
         if (request()->wantsJson()) {
-            return MakerResource::collection($makers);
+            return $makers instanceof Maker ? MakerResource::collection($makers) : $makers;
         }
 
         return view('maker.index', compact('makers'));

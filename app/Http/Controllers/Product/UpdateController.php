@@ -14,8 +14,9 @@ class UpdateController extends BaseController
 
         $product = $this->service->update($product, $data);
 
-        if (request()->wantsJson())
-            return new ProductResource($product);
+        if (request()->wantsJson()) {
+            return $product instanceof Product ? new ProductResource($product) : $product;
+        }
 
         return redirect()->route('products.index');
     }

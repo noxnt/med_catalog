@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services\Product;
 
 use App\Models\Product;
@@ -26,7 +25,6 @@ class Service
             $product = Product::create($data);
             $this->loggingSuccess($product, 'creating');
             Db::commit();
-
         } catch (\Exception $exception) {
             Db::rollBack();
             $this->loggingFailed($exception, 'create');
@@ -67,7 +65,8 @@ class Service
     }
 
     // Logs
-    private function loggingSuccess($product, $action) {
+    private function loggingSuccess($product, $action)
+    {
         Log::channel('debuginfo')->info("Successful $action - product", [
             'id' => $product->id,
             'name' => $product->name,
@@ -75,7 +74,8 @@ class Service
         ]);
     }
 
-    private function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action)
+    {
         Log::channel('debuginfo')->error("Failed to $action - product", [
             'error' => $exception->getMessage(),
         ]);

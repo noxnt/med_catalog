@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Maker;
 
 use App\Http\Requests\Maker\StoreRequest;
 use App\Http\Resources\Maker\MakerResource;
+use App\Models\Maker;
 
 class StoreController extends BaseController
 {
@@ -13,8 +14,9 @@ class StoreController extends BaseController
 
         $maker = $this->service->store($data);
 
-        if (request()->wantsJson())
-            return new MakerResource($maker);
+        if (request()->wantsJson()) {
+            return $maker instanceof Maker ? new MakerResource($maker) : $maker;
+        }
 
         return redirect()->route('makers.index');
     }

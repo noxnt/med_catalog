@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services\Maker;
 
 use App\Models\Maker;
@@ -25,7 +24,6 @@ class Service
             $maker = Maker::create($data);
             $this->loggingSuccess($maker, 'creating');
             Db::commit();
-
         } catch (\Exception $exception) {
             Db::rollBack();
             $this->loggingFailed($exception, 'create');
@@ -66,14 +64,16 @@ class Service
     }
 
     // Logs
-    private function loggingSuccess($maker, $action) {
+    private function loggingSuccess($maker, $action)
+    {
         Log::channel('debuginfo')->info("Successful $action - maker", [
             'id' => $maker->id,
             'name' => $maker->name,
         ]);
     }
 
-    private function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action)
+    {
         Log::channel('debuginfo')->error("Failed to $action - maker", [
             'error' => $exception->getMessage(),
         ]);

@@ -19,7 +19,7 @@ class IndexController extends BaseController
         $products = $this->service->index($products);
 
         if (request()->wantsJson()) {
-            return ProductResource::collection($products);
+            return $products instanceof Product ? ProductResource::collection($products) : $products;
         }
 
         $makers = Maker::all();

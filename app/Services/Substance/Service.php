@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services\Substance;
 
 use App\Models\Substance;
@@ -25,7 +24,6 @@ class Service
             $substance = Substance::create($data);
             $this->loggingSuccess($substance, 'creating');
             Db::commit();
-
         } catch (\Exception $exception) {
             Db::rollBack();
             $this->loggingFailed($exception, 'create');
@@ -66,14 +64,16 @@ class Service
     }
 
     // Logs
-    private function loggingSuccess($substance, $action) {
+    private function loggingSuccess($substance, $action)
+    {
         Log::channel('debuginfo')->info("Successful $action - substance", [
             'id' => $substance->id,
             'name' => $substance->name,
         ]);
     }
 
-    private function loggingFailed($exception, $action) {
+    private function loggingFailed($exception, $action)
+    {
         Log::channel('debuginfo')->error("Failed to $action - substance", [
             'error' => $exception->getMessage(),
         ]);

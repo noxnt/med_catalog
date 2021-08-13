@@ -11,8 +11,9 @@ class DestroyController extends BaseController
     {
         $product = $this->service->destroy($product);
 
-        if (request()->wantsJson())
-            return new ProductResource($product);
+        if (request()->wantsJson()) {
+            return $product instanceof Product ? new ProductResource($product) : $product;
+        }
 
         return redirect()->route('products.index');
     }

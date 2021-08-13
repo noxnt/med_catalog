@@ -14,8 +14,9 @@ class UpdateController extends BaseController
 
         $substance = $this->service->update($substance, $data);
 
-        if (request()->wantsJson())
-            return new SubstanceResource($substance);
+        if (request()->wantsJson()) {
+            return $substance instanceof Substance ? new SubstanceResource($substance) : $substance;
+        }
 
         return redirect()->route('substances.index');
     }

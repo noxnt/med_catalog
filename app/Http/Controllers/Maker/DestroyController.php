@@ -11,8 +11,9 @@ class DestroyController extends BaseController
     {
         $maker = $this->service->destroy($maker);
 
-        if (request()->wantsJson())
-            return new MakerResource($maker);
+        if (request()->wantsJson()) {
+            return $maker instanceof Maker ? new MakerResource($maker) : $maker;
+        }
 
         return redirect()->route('makers.index');
     }

@@ -18,7 +18,7 @@ class IndexController extends BaseController
         $substances = $this->service->index($substances);
 
         if (request()->wantsJson()) {
-            return SubstanceResource::collection($substances);
+            return $substances instanceof Substance ? SubstanceResource::collection($substances) : $substances;
         }
 
         return view('substance.index', compact('substances'));
