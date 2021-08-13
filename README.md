@@ -90,5 +90,9 @@ DELETE	|'/products/{id}'   |   удаление записи
     "link": "http://link.test"
 }</pre>
 
+## Требования
+* PHP 7.3 и выше
+* Локальный сервер (WAMP, OpenServer, XAMPP), либо используйте SQLite (PHPStorm)
+
 ## Linter
-Код соответствует стандартам PSR-12, использовалась библиотека [https://github.com/laravel-fans/laravel-lint]().
+Код соответствует стандартам PSR-12, использовалась [эта библиотека](https://github.com/laravel-fans/laravel-lint).
